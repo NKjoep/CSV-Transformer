@@ -7,7 +7,7 @@ A web tool useful if you have to transform CSV files.
 How to use it
 -------------
 
- * download it in your computer, or simply [use the online one](http://nkjoep.altervista.org/CSV-Transformer/)
+ * download it in your computer, or simply [use it online](http://nkjoep.github.com/CSV-Transformer/index.html)
  * fill the separator section: character(s) for the main separator and the text fields wrapper
  * in the "Headers Mapping" section, input the column header and press "read columns"
  * in the "Data" section, insert your CSV data
