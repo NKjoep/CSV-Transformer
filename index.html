@@ -1,46 +1,211 @@
-<html>
-	<!-- /* CSV Transformer by Andrea Dessì <nkjoep@gmail.com> - MIT License */ -->
-	<head>
-		<title>CSV Transformer</title>
-		<script type="text/javascript" src="lib/mootools-core-1.3.2-full-nocompat-yc.js"></script>
-		<script type="text/javascript" src="lib/csv-transformer.js"></script>
-	</head>
-	<body>
-		<h1>CSV Transformer</h1>
-		<form>
-			<fieldset>
-				<legend>Separators</legend>
-				<p>
-					<label for="separator">Separator</label>
-					<input type="text" id="separator" value=";" />
-				</p>				
-				<p>
-					<label for="separator-text">Field Text Separator</label>
-					<input type="text" id="separator-text" value='"' />
-				</p>				
-			</fieldset>
-			<fieldset>
-				<legend>Headers Mapping</legend>
-				<p>
-					<label for="column-map">Column Headers</label><br />
-					<textarea id="column-map" cols="80" rows="3">"example-header-number";"example-header-name"</textarea><br />
-					<input type="submit" id="column-map-submit-go" value="read columns" />
-				</p>
-				
-			</fieldset>
-			<fieldset>
-				<legend>Field Mapping</legend>
-				<table border="0" id="column-map-submit">
-					<tr>
-						<td>Please perfom Headers Mapping first.</td>
-					</tr>
-				</table>		
-			</fieldset>
-			<fieldset>
-				<legend>Data</legend>
-				<p>
-					<label for="data">Values</label><br />
-					<textarea id="data" cols="80" rows="3">"1";"gen."
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+		<head>
+				<meta charset="utf-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+				<title>CSV Transformer | A tool for manipulating strings</title>
+				<meta name="description" content="A tool for manipulating strings">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+
+				<link rel="stylesheet" href="css/bootstrap.min.css">
+				<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+				<link rel="stylesheet" href="css/bootstrap-vertical-tabs.min.css">
+				<link rel="stylesheet" href="fonts/font-awesome-4.0.3/css/font-awesome.min.css">
+				<link rel="stylesheet" href="css/main.css">
+
+				<!--[if lt IE 9]>
+						<script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+				<![endif]-->
+		</head>
+		<body>
+				<!--[if lt IE 7]>
+						<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+				<![endif]-->
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">CSV Transformer</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">1. Configure</div>
+					<div class="panel-body">
+						<div class="col-xs-2"> <!-- required for floating -->
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs tabs-left">
+									<li class="active"><a href="#separator" data-toggle="tab">Separator</a></li>
+									<li><a href="#headers" data-toggle="tab">Fields</a></li>
+									<li><a href="#fields-transform" data-toggle="tab">Transform</a></li>
+									<li><a href="#post-process" data-toggle="tab">Post Process</a></li>
+								</ul>
+						</div>
+
+						<div class="col-xs-10">
+								<!-- Tab panes -->
+								<div class="tab-content">
+
+									<div class="active tab-pane" id="separator">
+										<h3 class="h4 alert bg-primary">Separator</h3>
+										<form class="form-horizontal">
+											<div class="form-group">
+												<label for="conf-separator-symbol" class="col-sm-2 control-label">Separator symbol</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="conf-separator-symbol" placeholder=";" value=";">
+													<span class="help-block">Usually it's a <code>;</code>. This string will determine the end each column</span>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="conf-text-delimiter" class="col-sm-2 control-label">Text delimiter</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="conf-text-delimiter" placeholder="&quot;" value="&quot;">
+													<span class="help-block">Usually it's a <code>"</code>. This string will determine how the text of the column is delimited.</span>
+												</div>
+											</div>
+										</form>
+									</div>
+
+									<div class="tab-pane" id="headers">
+										<h3 class="h4 alert bg-primary">Fields Mapping</h3>
+										<form class="form-horizontal">
+											<div class="form-group">
+												<label for="conf-headers-mapping" class="col-sm-2 control-label">Header row</label>
+												<div class="col-sm-10">
+													<textarea class="form-control" id="conf-headers-mapping" rows="2">"example-header-number";"example-header-name"
+													</textarea>
+													<span class="help-block"></span>
+													<button class="btn btn-primary" id="headers-acquire">
+														Acquire headers
+													</button>
+												</div>
+											</div>
+
+											<div class="form-group">
+											<hr />
+											</div>
+											<div class="form-group text-muted hidden" data-element="fields-mapping-items-headers">
+												<div class="col-sm-4">
+													<p class="form-control-static text-center"><strong>Header Reference</strong></p>
+												</div>
+												<div class="col-sm-8">
+													<p class="form-control-static text-center"><strong>Placeholder</strong></p>
+												</div>
+											</div>
+											<script type="text/template" data-element="fields-mapping-items-headers-template">
+												<div class="form-group" data-element="fields-mapping-item">
+													<label for="conf-header-mapping-{{name}}" class="col-sm-4 control-label">{{name}}</label>
+													<div class="col-sm-8">
+														<input type="text" name="fields-mapping-items-value" id="conf-header-mapping-{{name}}" value="{{field}}" class="form-control" />
+													</div>
+												</div>
+											</script>
+										</form>
+									</div>
+
+									<!-- fields transform -->
+									<div class="tab-pane" id="fields-transform">
+										<h3 class="h4 alert bg-primary">Fields Transform</h3>
+										<form class="form-horizontal">
+											<div class="form-group text-muted" data-element="fields-transform-items-headers">
+												<div class="col-sm-4">
+													<p class="form-control-static text-center"><strong>Field Reference</strong></p>
+												</div>
+												<div class="col-sm-4">
+													<p class="form-control-static text-center"><strong>Search</strong></p>
+												</div>
+												<div class="col-sm-4">
+													<p class="form-control-static text-center"><strong>Replace</strong></p>
+												</div>
+											</div>
+											<div data-element="fields-transform-items">
+												<div class="form-group">
+													<label for="conf-trasform-replace-empty" class="col-sm-4 control-label">All fields</label>
+													<div class="col-sm-4">
+														<p class="form-control-static text-center">When value is empty</p>
+													</div>
+													<div class="col-sm-4">
+														<input type="text" name="" id="conf-trasform-replace-empty" value="" class="form-control" />
+													</div>
+												</div>
+												<script type="text/template" data-element="fields-transform-items-template">
+												<div class="form-group" data-element="fields-transform-item">
+													<label for="conf-header-mapping-f{{counter}}" class="col-sm-4 control-label"><code>{{name}}</code></label>
+													<div class="col-sm-4">
+														<input type="text" name="fields-transform-item-search" value="" class="form-control" />
+													</div>
+													<div class="col-sm-4">
+														<input type="text" name="fields-transform-item-replace" value="" class="form-control" />
+													</div>
+												</div>
+												</script>
+											</div>
+										</form>
+									</div>
+
+
+
+									<!-- post processing -->
+									<div class="tab-pane" id="post-process">
+										<h3 class="h4 alert bg-primary">Post Processing</h3>
+										<form class="form-horizontal">
+											<div class="form-group text-muted hidden" data-element="post-process-items-headers">
+												<div class="col-sm-5">
+													<p class="form-control-static text-center"><strong>Search String</strong></p>
+												</div>
+												<div class="col-sm-5">
+													<p class="form-control-static text-center"><strong>Replace String</strong></p>
+												</div>
+												<div class="col-sm-2">
+												</div>
+											</div>
+											<div data-element="post-process-items"></div>
+											<script type="text/template" data-element="rule-template">
+												<div class="form-group" data-element="post-process-item">
+													<div class="col-sm-5">
+														<input type="text" name="post-process-search" placeholder="search something..." class="form-control" />
+													</div>
+													<div class="col-sm-5">
+														<input type="text" name="post-process-replace" placeholder="replace with this" class="form-control" />
+													</div>
+													<div class="col-sm-2 text-center">
+														<button class="btn btn-warning" name="post-process-delete"><span class="fa fa-times"></span></button>
+													</div>
+												</div>
+											</script>
+											<div class="form-group">
+												<div class="col-sm-12	">
+													<button class="btn btn-default" id="add-rule-button">
+														<span class="fa fa-plus"></span>
+														&#32;Add rule
+													</button>
+												</div>
+											</div>
+										</form>
+									</div>
+
+								</div>
+						</div>
+
+						<div class="clearfix"></div>
+					</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">2. Insert Data</div>
+					<textarea class="form-control panel-body" id="data-input" rows="8">
+"1";"gen."
 "2";"feb."
 "3";"mar."
 "4";"apr."
@@ -51,49 +216,31 @@
 "9";"sett."
 "10";"ott."
 "11";"nov."
-"12";"dic.</textarea>
-				</p>
-				<p>
-					Conditional Cases:<br />
-					<table id="conditional" border="1">
-						<tr>
-							<th>field</th>
-							<th>search regexp</th>
-							<th>replace with string</th>
-						</tr>
-						<tr>
-							<th>All fields</th>
-							<th>If is an empty string</th>
-							<td><input type="text" id="cond_emtpy" value="" /></td>
-						</tr>
-					</table>
-				</p>
-			</fieldset>
-			<fieldset>
-				<legend>OutPut Mapping</legend>
-				<p>
-					<label>Output Items</label><br />
-					<textarea id="output-map" cols="80" rows="3"></textarea><br />
-				</p>
-				
-				<table border="0" id="output-map-submit">
-				</table>
-			</fieldset>
-			<fieldset>
-				<legend>Post Processing</legend>
-				<table id="postrules">
-					<tr>
-						<th>Search regexp</th>
-						<th>Replace with string</th>
-						<th>-</th>
-					</tr>
-				</table>
-				<input type="submit" id="addpostrule" value="add postprocessing rule" />				
-			</fieldset>
-			<p>
-				<input type="submit" id="output-map-submit-go" value="transform" />
-			</p>
-		</form>		
-		<div id="data-output"></div>
+"12";"dic.
+					</textarea>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">3. Edit the output template <a class="btn btn-sm btn-default hidden" href="#data-output" id="create-sample-output">create sample</a></div>
+					<textarea class="form-control panel-body" id="data-output" rows="5"></textarea>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">4. Transform them all <button data-loading-text="Loading..." class="btn btn-default btn-sm" id="go">start! <span class="icon fa fa-code"></span>&#32;</button></div>
+				<textarea class="form-control panel-body" rows="12" id="results"></textarea>
+			</div>
+
+
+		</div>
+		<a href="https://github.com/NKjoep/CSV-Transformer">
+			<img style="position: fixed; top: 0; right: 0; border: 0; z-index: 9999;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" />
+		</a>
+
+
+		<script src="js/vendor/jquery-1.11.0.min.js"></script>
+		<script src="js/vendor/bootstrap.min.js"></script>
+		<script src="js/vendor/handlebars-v1.3.0.js"></script>
+		<script src="js/vendor/underscore-min.js"></script>
+		<script src="js/main.js"></script>
 	</body>
 </html>
