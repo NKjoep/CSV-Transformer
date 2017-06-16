@@ -1,5 +1,8 @@
 RegExp.escape = function(s) {
+	if (s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	}
+	return '';
 };
 
 jQuery(function(){
