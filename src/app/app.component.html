@@ -1,0 +1,87 @@
+<mat-card>
+    <textarea #source (change)="doStuff(source.value)">
+        entity type,action,type,country,id,club,lang,lang&club,image
+        team,favorite,FAV,Brazil,1802,Flamengo,PT,FlamengoPT,1
+        team,favorite,FAV,Brazil,1649,Corinthians,PT,CorinthiansPT,2
+        team,favorite,FAV,Brazil,5,Barcelona,PT,BarcelonaPT,3
+        team,favorite,FAV,Brazil,26,Real Madrid,PT,Real MadridPT,4
+        team,favorite,FAV,Brazil,263,Paris Saint-Germain,PT,Paris Saint-GermainPT,5
+        team,favorite,FAV,Brazil,1677,Sao Paulo,PT,Sao PauloPT,6
+        team,favorite,FAV,Brazil,1693,Palmeiras,PT,PalmeirasPT,7
+        team,favorite,FAV,Brazil,1798,Santos,PT,SantosPT,8
+        team,favorite,FAV,Brazil,1670,Gr√™mio,PT,Gr√™mioPT,9
+        team,favorite,FAV,Brazil,1790,Vasco da Gama,PT,Vasco da GamaPT,10
+        team,favorite,FAV,Germany,6,FC Bayern M√ºnchen,DE,FC Bayern M√ºnchenDE,11
+        team,favorite,FAV,Germany,155,Borussia Dortmund,DE,Borussia DortmundDE,12
+        team,favorite,FAV,Germany,26,Real Madrid,DE,Real MadridDE,13
+        team,favorite,FAV,Germany,5,Barcelona,DE,BarcelonaDE,14
+        team,favorite,FAV,Germany,263,Paris Saint-Germain,DE,Paris Saint-GermainDE,15
+        team,favorite,FAV,Germany,144,FC Schalke 04,DE,FC Schalke 04DE,16
+        team,favorite,FAV,Germany,21,Manchester United,DE,Manchester UnitedDE,17
+        team,favorite,FAV,Germany,157,Hamburger SV,DE,Hamburger SVDE,18
+        team,favorite,FAV,Germany,17,Juventus,DE,JuventusDE,19
+        team,favorite,FAV,Germany,18,Liverpool,DE,LiverpoolDE,20
+        team,favorite,FAV,Italy,17,Juventus,IT,JuventusIT,21
+        team,favorite,FAV,Italy,23,Milan,IT,MilanIT,22
+        team,favorite,FAV,Italy,16,Inter Milano,IT,Inter MilanoIT,23
+        team,favorite,FAV,Italy,191,Napoli,IT,NapoliIT,24
+        team,favorite,FAV,Italy,26,Real Madrid,IT,Real MadridIT,25
+        team,favorite,FAV,Italy,145,Roma,IT,RomaIT,26
+        team,favorite,FAV,Italy,5,Barcelona,IT,BarcelonaIT,27
+        team,favorite,FAV,Italy,263,Paris Saint-Germain,IT,Paris Saint-GermainIT,28
+        team,favorite,FAV,Italy,139,Lazio,IT,LazioIT,29
+        team,favorite,FAV,Italy,6,FC Bayern M√ºnchen,IT,FC Bayern M√ºnchenIT,30
+        team,favorite,FAV,Mexico,5,Barcelona,ES,BarcelonaES,31
+        team,favorite,FAV,Mexico,26,Real Madrid,ES,Real MadridES,32
+        team,favorite,FAV,Mexico,1834,America,ES,AmericaES,33
+        team,favorite,FAV,Mexico,1417,Guadalajara,ES,GuadalajaraES,34
+        </textarea>
+</mat-card>
+
+
+<textarea #template
+  (change)="onTemplate(template.value)"
+  (keydown.enter)="onTemplate(template.value)">
+  {_index} - {type}
+</textarea>
+
+<ng-container *ngIf="results | async as res">
+  <table mat-table [dataSource]="res">
+    <!-- currentValue Column -->
+    <ng-container matColumnDef="currentValue">
+      <th mat-header-cell *matHeaderCellDef> Transformed Values </th>
+      <td mat-cell *matCellDef="let element"> {{element.currentValue}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['currentValue']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['currentValue'];"></tr>
+  </table>
+  <mat-paginator #paginator
+               [pageSize]="1"
+               [pageSizeOptions]="[5, 10, 50]"
+               [showFirstLastButtons]="true">
+  </mat-paginator>
+
+  <!-- <table>
+    <thead>
+      <tr>
+        <th *ngFor="let cell of res.headers.values">{{'{'+cell.value+'}'}}</th>
+      </tr>
+    </thead>
+    <ng-container *ngFor="let line of res">
+      <tr *ngIf="isShowOldValues">
+        <td *ngFor="let cell of line.values" [attr.title]="cell._originalValue">
+          {{cell.value}}
+        </td>
+      </tr>
+      <tr>
+        <td
+          [attr.title]="line._originalValue"
+          [attr.colspan]="line.values.length">
+          {{ line.currentValue }}<td>
+      </tr>
+    </ng-container>
+  </table> -->
+</ng-container>
+
+
+
