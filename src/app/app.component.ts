@@ -23,7 +23,7 @@ export class AppComponent {
   isShowOldValues = false;
   separator = CsvSymbols.COMMA;
   hasHeaders = true;
-  results: BehaviorSubject<MatTableDataSource<ICsvLine>> = new BehaviorSubject(null);
+  results: BehaviorSubject<MatTableDataSource<ICsvLine>> = new BehaviorSubject(new MatTableDataSource<ICsvLine>([]));
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,8 +50,12 @@ export class AppComponent {
       line.currentValue = this.mutateValue(line, template, lineIndex);
       return line;
     });
-    updated['headers'] = lines[1].headers;
-    this.setValues(lines);
+
+    const line1 = lines[1];
+    if (line1 && line1.headers) {
+      updated['headers'] = line1.headers;
+    }
+    this.setValues(updated);
   }
 
   private mutateValue(line: ICsvLine, template: string, index: number|string = '{_index}'): string {

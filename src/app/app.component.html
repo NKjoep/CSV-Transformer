@@ -1,6 +1,5 @@
 <mat-card>
-    <textarea #source (change)="doStuff(source.value)">
-        entity type,action,type,country,id,club,lang,lang&club,image
+    <textarea style="width: 80%; height: 3rem;" #source (change)="doStuff(source.value)">entity type,action,type,country,id,club,lang,lang&club,image
         team,favorite,FAV,Brazil,1802,Flamengo,PT,FlamengoPT,1
         team,favorite,FAV,Brazil,1649,Corinthians,PT,CorinthiansPT,2
         team,favorite,FAV,Brazil,5,Barcelona,PT,BarcelonaPT,3
@@ -44,6 +43,10 @@
   (keydown.enter)="onTemplate(template.value)">
   {_index} - {type}
 </textarea>
+
+
+<button (click)="doStuff(source.value)">(change)="doStuff(source.value)"</button>
+<button (click)="onTemplate(template.value)">onTemplate(template.value)</button>
 
 <ng-container *ngIf="results | async as res">
   <table mat-table [dataSource]="res">
